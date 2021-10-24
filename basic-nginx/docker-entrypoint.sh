@@ -2,4 +2,4 @@
 
 envsubst < /etc/nginx/conf.d/default.conf.tmpl > /etc/nginx/conf.d/default.conf
 
-"$@"
+exec "$@"
