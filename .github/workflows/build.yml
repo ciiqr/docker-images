@@ -5,8 +5,12 @@ on:
       - main
 jobs:
   build:
-    name: basic-nginx
+    name: Build ${{ matrix.image }}
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        image:
+          - basic-nginx
     steps:
     - uses: actions/checkout@v2
     - name: Set up Docker Buildx
@@ -20,9 +24,9 @@ jobs:
     - name: Build and push to registry
       uses: docker/build-push-action@v2
       with:
-        context: ./basic-nginx
-        file: ./basic-nginx/Dockerfile
-        tags: ghcr.io/${{ github.repository_owner }}/basic-nginx:latest
+        context: ./${{ matrix.image }}
+        file: ./${{ matrix.image }}/Dockerfile
+        tags: ghcr.io/${{ github.repository_owner }}/${{ matrix.image }}:latest
         push: true
         cache-from: type=gha
         cache-to: type=gha,mode=max
